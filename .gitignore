@@ -1,0 +1,19 @@
+
+# sbt files
+project/project
+project/target
+target/
+
+# ignore log files
+logs/
+journal/
+
+# intellij idea files
+**/.idea/
+*.iml
+
+# vim temporary files
+*.sw?
+
+# apple files
+.DS_Store
