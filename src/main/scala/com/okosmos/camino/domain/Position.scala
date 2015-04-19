@@ -11,8 +11,10 @@ case class KnightPosition(x: Int, y: Int) extends Position {
     val signs = Seq(-1, 1)
     val moves = Seq(1, 2)
     for {
-      (xSign, xDelta) <- signs zip moves
-      (ySign, yDelta) <- signs zip moves
+      xSign <- signs
+      ySign <- signs
+      xDelta <- moves
+      yDelta <- moves diff Seq(xDelta)
     } yield KnightPosition(x + (xSign * xDelta), y + (ySign * yDelta))
   }
 }
