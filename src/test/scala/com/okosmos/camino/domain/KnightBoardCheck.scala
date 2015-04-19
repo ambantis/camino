@@ -15,6 +15,19 @@ class KnightBoardCheck extends FunSpecChecker {
     iter(Board.forKnights(8).asInstanceOf[KnightBoard], 1)
   }
 
+  def knightBoardIterSeq(n: Int): Seq[KnightBoard] = {
+    def iter(acc: Seq[KnightBoard], i: Int): Seq[KnightBoard] = {
+      if (i == n) acc
+      else {
+        val nextAcc = acc.flatMap(_.next)
+        println(s"i = $i, size = ${nextAcc.size}")
+        iter(nextAcc, i + 1)
+      }
+    }
+    iter(Seq(Board.forKnights(8).asInstanceOf[KnightBoard]), 1)
+  }
+
+
   val stdBoardIdx = Gen.chooseNum(0, 7)
 
   describe("a knight board") {
@@ -45,7 +58,9 @@ class KnightBoardCheck extends FunSpecChecker {
         knightBoardIter(n).i shouldBe n
       }
     }
-    it("should not be done if fewer moves than the number of spaces have been made")(pending)
+    it("should not be done if fewer moves than the number of spaces have been made") {
+      knightBoardIterSeq(10) forall (_.isDone) shouldBe false
+    }
     it("should generate 8 boards with `this.next` if all knight moves are valid")(pending)
     it("should generate N boards with `this.next` according to `8 - invalidMoves`")(pending)
   }
