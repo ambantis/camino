@@ -9,7 +9,7 @@ trait Board {
 }
 
 object Board {
-  def apply(n: Int, start: KnightPosition = KnightPosition(0,0)): Board = {
+  def forKnights(n: Int, start: KnightPosition = KnightPosition(0,0)): Board = {
     require(start.x >= 0 && start.y >= 0 && start.x < n && start.y < n, "invalid start position")
     require(n <= Int.MaxValue - 2, "warning: size of board risks error due to integer overflow")
     val row = Vector.fill(n)(0)
