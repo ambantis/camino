@@ -12,7 +12,13 @@ scalacOptions := Seq(
   "-language:postfixOps"
 )
 
-libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-  "org.scalacheck" %% "scalacheck" % "1.12.0" % "test"
-)
+libraryDependencies ++= {
+  val akkaVersion = "2.3.9"
+  Seq(
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+    "com.typesafe.akka" %% "akka-contrib" % akkaVersion,
+    "org.scalatest" %% "scalatest" % "2.2.1" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.12.0" % "test"
+  )
+}
