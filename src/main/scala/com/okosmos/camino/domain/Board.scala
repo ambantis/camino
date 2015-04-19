@@ -12,15 +12,23 @@ object Board {
   def apply(n: Int, start: KnightPosition = KnightPosition(0,0)): Board = {
     require(start.x >= 0 && start.y >= 0 && start.x < n && start.y < n)
     val row = Vector.fill(n)(0)
-    KnightBoard(start, Vector.fill(n)(row)).update(start).get
+    KnightBoard(
+      knight = start,
+      min = 0,
+      max = n - 1,
+      i = 0,
+      remaining = n * n,
+      squares = Vector.fill(n)(row)
+    ).update(start).get
   }
 }
 
-private [domain] case class KnightBoard(knight: KnightPosition, squares: Vector[Vector[Int]]) extends Board {
-  val max = squares.map(_.indices.max).max
-  val min = squares.map(_.indices.min).min
-  val nextCounter: Int = squares.flatten.max + 1
-
+private [domain] case class KnightBoard(knight: KnightPosition,
+                                        min: Int,
+                                        max: Int,
+                                        i: Int,
+                                        remaining: Int,
+                                        squares: Vector[Vector[Int]]) extends Board {
   override lazy val solution: List[KnightPosition] = {
     lazy val pointsWithIndex: List[(KnightPosition, Int)] =
       for {
@@ -30,7 +38,7 @@ private [domain] case class KnightBoard(knight: KnightPosition, squares: Vector[
     if (isDone) pointsWithIndex.sortBy(_._2).map(_._1) else List.empty
   }
 
-  override def isDone: Boolean = squares.flatten.forall(_ > 0)
+  override def isDone: Boolean = remaining == 0
 
   override def next: Seq[Board] = knight.nextMoves map update flatten
 
@@ -40,6 +48,12 @@ private [domain] case class KnightBoard(knight: KnightPosition, squares: Vector[
   def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.x)(pos.y) > 0
 
   def update(pos: KnightPosition): Option[Board] =
-    if (isFree(pos)) Some(KnightBoard(pos, squares.updated(pos.x, squares(pos.x).updated(pos.y, nextCounter))))
+    if (isFree(pos))
+      Some(copy(
+        knight = pos,
+        i = i + 1,
+        remaining = remaining - 1,
+        squares = squares.updated(pos.x, squares(pos.x).updated(pos.y, i + 1))
+      ))
     else None
 }
