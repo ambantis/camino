@@ -6,6 +6,7 @@ trait Board {
   def solution: List[Position]
   def isDone: Boolean
   def next: Seq[Board]
+  def show(): Unit
 }
 
 object Board {
@@ -60,5 +61,8 @@ case class KnightBoard(knight: KnightPosition,
       ))
     else None
 
-  def printBoard(): Unit = for (row <- squares.reverse) println(row.mkString(","))
+  def show(): Unit = {
+    println(s"Knight = $knight")
+    for (row <- squares.reverse) println(row.mkString(","))
+  }
 }
