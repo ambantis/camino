@@ -11,25 +11,27 @@ trait Board {
 object Board {
   def forKnights(n: Int, start: KnightPosition = KnightPosition(0,0)): Board = {
     require(start.x >= 0 && start.y >= 0 && start.x < n && start.y < n, "invalid start position")
+    require(n > 1, "invalid board size")
     require(n <= Int.MaxValue - 2, "warning: size of board risks error due to integer overflow")
     val row = Vector.fill(n)(0)
     KnightBoard(
       knight = start,
       min = 0,
       max = n - 1,
-      i = 0,
-      remaining = n * n,
-      squares = Vector.fill(n)(row)
-    ).update(start).get
+      i = 1,
+      remaining = n * n - 1,
+      squares = Vector.fill(n)(row).updated(start.y, row.updated(start.x, 1))
+    )
   }
 }
 
-private [domain] case class KnightBoard(knight: KnightPosition,
-                                        min: Int,
-                                        max: Int,
-                                        i: Int,
-                                        remaining: Int,
-                                        squares: Vector[Vector[Int]]) extends Board {
+private [domain]
+case class KnightBoard(knight: KnightPosition,
+                       min: Int,
+                       max: Int,
+                       i: Int,
+                       remaining: Int,
+                       squares: Vector[Vector[Int]]) extends Board {
   override lazy val solution: List[KnightPosition] = {
     lazy val pointsWithIndex: List[(KnightPosition, Int)] =
       for {
@@ -41,14 +43,14 @@ private [domain] case class KnightBoard(knight: KnightPosition,
 
   override def isDone: Boolean = remaining == 0
 
-  override def next: Seq[Board] = knight.nextMoves map update flatten
+  override def next: Seq[KnightBoard] = knight.nextMoves map update flatten
 
   def isValid(pos: KnightPosition): Boolean =
     pos.x >= min && pos.y >= min && pos.x <= max && pos.y <= max
 
-  def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.x)(pos.y) > 0
+  def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.x)(pos.y) == 0
 
-  def update(pos: KnightPosition): Option[Board] =
+  def update(pos: KnightPosition): Option[KnightBoard] =
     if (isFree(pos))
       Some(copy(
         knight = pos,
@@ -57,4 +59,6 @@ private [domain] case class KnightBoard(knight: KnightPosition,
         squares = squares.updated(pos.x, squares(pos.x).updated(pos.y, i + 1))
       ))
     else None
+
+  def printBoard(): Unit = for (row <- squares.reverse) println(row.mkString(","))
 }
