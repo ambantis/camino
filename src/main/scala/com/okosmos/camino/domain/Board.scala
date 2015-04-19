@@ -5,6 +5,7 @@ import scala.language.postfixOps
 trait Board {
   def solution: List[Position]
   def isDone: Boolean
+  def remaining: Int
   def next: Seq[Board]
   def show(): Unit
 }
