@@ -4,6 +4,7 @@ trait Position {
   def x: Int
   def y: Int
   def nextMoves: Seq[Position]
+  override def toString: String = s"Position(${x+1},${y+1})"
 }
 
 case class KnightPosition(x: Int, y: Int) extends Position {
@@ -17,5 +18,6 @@ case class KnightPosition(x: Int, y: Int) extends Position {
       yDelta <- moves diff Seq(xDelta)
     } yield KnightPosition(x + (xSign * xDelta), y + (ySign * yDelta))
   }
+  override def toString: String = s"KnightsPosition(${x+1},${y+1})"
 }
 

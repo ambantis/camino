@@ -62,7 +62,7 @@ case class KnightBoard(knight: KnightPosition,
     else None
 
   def show(): Unit = {
-    println(s"Knight = $knight")
+    println(s"i = $i, Knight = $knight")
     for (row <- squares.reverse) println(row.map(x => f"$x%02d").mkString(","))
   }
 }
