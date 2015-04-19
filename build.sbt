@@ -8,7 +8,7 @@ scalacOptions := Seq(
   "-feature",
   "-unchecked",
   "-deprecation",
-  "encoding", "UTF-8",
+  "-encoding", "utf8",
   "-language:postfixOps"
 )
 
