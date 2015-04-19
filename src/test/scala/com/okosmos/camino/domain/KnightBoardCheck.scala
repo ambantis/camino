@@ -15,12 +15,22 @@ class KnightBoardCheck extends FunSpecChecker {
     iter(Board.forKnights(8).asInstanceOf[KnightBoard], 1)
   }
 
+  val stdBoardIdx = Gen.chooseNum(0, 7)
+
   describe("a knight board") {
     it("should have remaining spaces equal to `n * n - 1` on a newly created board") {
       forAll(Gen.chooseNum(2, 100)) { n =>
         Board.forKnights(n) match {
           case (k: KnightBoard) =>
             n * n - 1 shouldBe k.remaining
+        }
+      }
+    }
+    it("should have a knight position coordinates that correspond to the chess board") {
+      forAll(stdBoardIdx, stdBoardIdx) { (x: Int, y: Int) =>
+        Board.forKnights(8, KnightPosition(x, y)) match {
+          case board: KnightBoard =>
+            board.squares(y)(x) shouldBe 1
         }
       }
     }
