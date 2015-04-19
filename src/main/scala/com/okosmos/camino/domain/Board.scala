@@ -49,7 +49,7 @@ case class KnightBoard(knight: KnightPosition,
   def isValid(pos: KnightPosition): Boolean =
     pos.x >= min && pos.y >= min && pos.x <= max && pos.y <= max
 
-  def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.x)(pos.y) == 0
+  def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.y)(pos.x) == 0
 
   def update(pos: KnightPosition): Option[KnightBoard] =
     if (isFree(pos))
@@ -57,12 +57,12 @@ case class KnightBoard(knight: KnightPosition,
         knight = pos,
         i = i + 1,
         remaining = remaining - 1,
-        squares = squares.updated(pos.x, squares(pos.x).updated(pos.y, i + 1))
+        squares = squares.updated(pos.y, squares(pos.y).updated(pos.x, i + 1))
       ))
     else None
 
   def show(): Unit = {
     println(s"Knight = $knight")
-    for (row <- squares.reverse) println(row.mkString(","))
+    for (row <- squares.reverse) println(row.map(x => f"$x%02d").mkString(","))
   }
 }
