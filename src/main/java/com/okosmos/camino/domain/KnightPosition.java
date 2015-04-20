@@ -34,9 +34,8 @@ public class KnightPosition extends Position {
         for (int xSign : signs) {
             for (int ySign : signs) {
                 for (int xDelta : moves) {
-                    for (int yDelta : moves) {
-                        result.add(new KnightPosition(x + (xSign * xDelta), y + (ySign * yDelta)));
-                    }
+                    int yDelta = (xDelta == 1) ? 2 : 1;
+                    result.add(new KnightPosition(x + (xSign * xDelta), y + (ySign * yDelta)));
                 }
             }
         }

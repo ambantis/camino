@@ -27,8 +27,9 @@ public class ElCamino {
         LinkedList<Board> boards = new LinkedList<>();
         List<Solution> solutions = new LinkedList<>();
         boards.add(new KnightBoard(n, x, y));
-
+        int i = 1;
         while (!boards.isEmpty()) {
+            ++i;
             boards.remove().next()
                     .parallelStream()
                     .map(Board::next)
@@ -40,6 +41,9 @@ public class ElCamino {
                         else
                             boards.addFirst(board);
                     });
+            System.out.println("completed iteration " + i + " boards.size = " + boards.size());
+            System.out.println(boards.getFirst());
+            System.out.println();
         }
 
         solutions.stream().forEach(System.out::println);
