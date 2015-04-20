@@ -73,8 +73,8 @@ public class KnightBoard extends Board {
 
     private int[][] copyFrom(int[][] that) {
         int[][] result = new int[that.length][that[0].length];
-        for (int p = 0; p < squares.length; p++)
-            result[p] = Arrays.copyOf(squares[p], squares[p].length);
+        for (int p = 0; p < that.length; p++)
+            result[p] = Arrays.copyOf(that[p], that[p].length);
         return result;
     }
 
@@ -94,5 +94,27 @@ public class KnightBoard extends Board {
         } else {
             return Optional.empty();
         }
+    }
+
+    private String rowToString(int[] row) {
+        StringBuilder sb = new StringBuilder();
+        String lineBreak = System.getProperty("line.separator");
+        sb.append("[ ");
+        for (int i : row)
+            sb.append(String.format("%02d", i) + " ");
+        sb.append(']');
+        sb.append(lineBreak);
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        String lineBreak = System.getProperty("line.separator");
+        sb.append("KnightBoard, i = " + i + " remaining = " + remaining + lineBreak);
+        for (int i = squares.length-1; i >= 0; i--) {
+            sb.append(rowToString(squares[i]));
+        }
+        return sb.toString();
     }
 }
