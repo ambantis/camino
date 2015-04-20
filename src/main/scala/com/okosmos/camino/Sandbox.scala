@@ -5,17 +5,17 @@ import com.okosmos.camino.domain.Board
 object Sandbox {
 
   def findSolutionFor(n: Long): Board = {
-    def iter(acc: Seq[Board], i: Long, rem: Seq[Board]): Board = {
-      if (i == n || rem.isEmpty) {
-        rem.head.show()
-        rem.head
+    def iter(acc: Seq[Board], rem: Seq[Board]): Board = {
+      if (rem.isEmpty || acc.nonEmpty ) {
+        acc.head.show()
+        acc.head
       }
       else {
-        val nextRem = rem.head.next ++ rem.tail
-        println(s"i = $i, nextRem.size = ${nextRem.size}")
-        iter(acc, i + 1, nextRem)
+        val nextRem = (rem.head.next ++ rem.tail).sortBy(_.remaining)
+        println(s"nextRem.size = ${nextRem.size} with head remaining = ${nextRem.head.remaining}")
+        iter(acc, nextRem)
       }
     }
-    iter(Nil, 2, Board.forKnights(8).next.toList)
+    iter(Nil, Board.forKnights(8).next.toList)
   }
 }

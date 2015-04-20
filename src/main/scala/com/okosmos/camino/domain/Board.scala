@@ -11,7 +11,7 @@ trait Board {
 }
 
 object Board {
-  def forKnights(n: Int, start: KnightPosition = KnightPosition(0,0)): Board = {
+  def forKnights(n: Int, start: Position = KnightPosition(0,0)): Board = {
     require(start.x >= 0 && start.y >= 0 && start.x < n && start.y < n, "invalid start position")
     require(n > 1, "invalid board size")
     require(n <= Int.MaxValue - 2, "warning: size of board risks error due to integer overflow")
@@ -28,7 +28,7 @@ object Board {
 }
 
 private [domain]
-case class KnightBoard(knight: KnightPosition,
+case class KnightBoard(knight: Position,
                        min: Int,
                        max: Int,
                        i: Int,
@@ -45,14 +45,14 @@ case class KnightBoard(knight: KnightPosition,
 
   override def isDone: Boolean = remaining == 0
 
-  override def next: Seq[KnightBoard] = knight.nextMoves map update flatten
+  override def next: Seq[Board] = knight.nextMoves map update flatten
 
-  def isValid(pos: KnightPosition): Boolean =
+  def isValid(pos: Position): Boolean =
     pos.x >= min && pos.y >= min && pos.x <= max && pos.y <= max
 
-  def isFree(pos: KnightPosition): Boolean = isValid(pos) && squares(pos.y)(pos.x) == 0
+  def isFree(pos: Position): Boolean = isValid(pos) && squares(pos.y)(pos.x) == 0
 
-  def update(pos: KnightPosition): Option[KnightBoard] =
+  def update(pos: Position): Option[KnightBoard] =
     if (isFree(pos))
       Some(copy(
         knight = pos,
