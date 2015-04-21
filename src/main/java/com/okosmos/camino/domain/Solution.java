@@ -26,4 +26,8 @@ public class Solution {
         return sb.toString();
     }
 
+    public boolean isClosed() {
+        return moves.get(moves.size()-1).nextMoves().contains(moves.get(0));
+    }
+
 }

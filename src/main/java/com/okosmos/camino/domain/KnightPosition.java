@@ -41,4 +41,18 @@ public class KnightPosition extends Position {
         }
         return result;
     }
+
+    @Override public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof KnightPosition))
+            return false;
+        KnightPosition that = (KnightPosition) obj;
+        return x == that.getX() && y == that.getY();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
+    }
 }

@@ -46,7 +46,11 @@ public class ElCamino {
                 System.out.println();
             }
         }
+        System.out.println("The solutions are");
         solutions.stream().forEach(System.out::println);
+
+        System.out.println("The closed solutions are");
+        solutions.stream().filter(Solution::isClosed).forEach(System.out::println);
     }
 
 }
