@@ -3,6 +3,26 @@ package com.okosmos.camino.domain;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Using java is about reducing the memory footprint of the application so that Java spends less time with
+ * garbage collection and more time actually running the application (Scala uses boxed types). The basic idea
+ * is to list of boards to evaluate, sorted by remaining squares so that boards are eliminated as quickly as they
+ * are created (roughly speaking) and thus effectively uses lazy evaluation.
+ *
+ * However, two problems were encountered in doing this problem:
+ *   1. Linked Lists do not have a constant-time addAll (which is odd, because it would just be a matter of linking the
+ *      last item of list1 to the first item of list2.
+ *   2. Parallel streams are optimized for map/fold operations of a very large size (in previous tests with java 8, it
+ *      seemed like a Scala parallel collection seemed to have a speedup with 50 items that could be operated on in parallel).
+ *
+ * The next level of speedup will be to use akka. A set of children evaluate each board, sending the solution (if done)
+ * to a collector actor or else sending to itself the next boards. The routees (or children worker actors) whould need to
+ * be limited to some sensible default and they would need to use a priority mailbox so that the "older" boards are
+ * operated upon before the "younger" boards. Beyond that, the task could utilize more cores through using akka cluster
+ *
+ * Tests have not been written for the Java classes yet, but if you look in the scala branches, you'll see scalatest and
+ * scalacheck tests. Those would need to be modified somewhat to work with these java versions.
+ */
 public class ElCamino {
     public static void main(String[] args) {
         int n = 8;
