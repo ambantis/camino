@@ -1,9 +1,6 @@
 package com.okosmos.camino.domain;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class KnightBoard extends Board {
     private Position knight;
@@ -59,16 +56,14 @@ public class KnightBoard extends Board {
     }
 
     @Override
-    public List<Board> next() {
-        List<Board> result = new LinkedList<>();
-        knight.nextMoves()
+    public Board[] next() {
+        return knight.nextMoves()
                 .stream()
                 .map(this::update)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .sorted((b1, b2) -> b2.getRemaining() - b1.getRemaining())
-                .forEach(result::add);
-        return result;
+                .toArray(Board[]::new);
     }
 
     private int[][] copyFrom(int[][] that) {
@@ -107,8 +102,7 @@ public class KnightBoard extends Board {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
+    public String show() {
         StringBuilder sb = new StringBuilder();
         String lineBreak = System.getProperty("line.separator");
         sb.append("KnightBoard, i = " + i + " remaining = " + remaining + lineBreak);

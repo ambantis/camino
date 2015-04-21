@@ -16,8 +16,7 @@ public class Solution {
             throw new IllegalArgumentException("a solution must have at least one move");
     }
 
-    @Override
-    public String toString() {
+    public String show() {
         StringBuilder sb = new StringBuilder();
         String lineBreak = System.getProperty("line.separator");
         sb.append("Solution in " + moves.size() + " moves:" + lineBreak);

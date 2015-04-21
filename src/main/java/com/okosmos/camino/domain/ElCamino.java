@@ -30,22 +30,22 @@ public class ElCamino {
         int i = 1;
         while (!boards.isEmpty()) {
             ++i;
-            boards.remove().next()
-                    .parallelStream()
-                    .map(Board::next)
-                    .flatMap(List::stream)
-                    .sorted((b1, b2) -> b2.getRemaining() - b1.getRemaining())
-                    .forEach(board -> {
-                        if (board.isDone())
-                            solutions.add(board.solution().get());
-                        else
-                            boards.addFirst(board);
-                    });
-            System.out.println("completed iteration " + i + " boards.size = " + boards.size());
-            System.out.println(boards.getFirst());
-            System.out.println();
+            Board head = boards.remove();
+            if (head.isDone()) {
+                solutions.add(head.solution().get());
+            } else {
+                for (Board b : head.next()) {
+                   if (b.isDone()) {
+                       solutions.add(b.solution().get());
+                   } else {
+                       boards.addFirst(b);
+                   }
+                }
+                System.out.println("completed iteration " + i + " boards.size = " + boards.size());
+                System.out.println(boards.getFirst().show());
+                System.out.println();
+            }
         }
-
         solutions.stream().forEach(System.out::println);
     }
 

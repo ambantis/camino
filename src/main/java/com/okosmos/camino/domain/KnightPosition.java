@@ -1,6 +1,6 @@
 package com.okosmos.camino.domain;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class KnightPosition extends Position {
@@ -30,7 +30,7 @@ public class KnightPosition extends Position {
 
     @Override
     public List<Position> nextMoves() {
-        List<Position> result = new LinkedList<>();
+        List<Position> result = new ArrayList<>(8);
         for (int xSign : signs) {
             for (int ySign : signs) {
                 for (int xDelta : moves) {
