@@ -95,8 +95,10 @@ public class KnightBoard extends Board {
         StringBuilder sb = new StringBuilder();
         String lineBreak = System.getProperty("line.separator");
         sb.append("[ ");
-        for (int i : row)
-            sb.append(String.format("%02d", i) + " ");
+        for (int i : row) {
+            String entry = (i == 0) ? "   " : String.format("%02d", i) + " ";
+            sb.append(entry);
+        }
         sb.append(']');
         sb.append(lineBreak);
         return sb.toString();
