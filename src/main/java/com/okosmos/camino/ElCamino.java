@@ -1,4 +1,8 @@
-package com.okosmos.camino.domain;
+package com.okosmos.camino;
+
+import com.okosmos.camino.domain.Board;
+import com.okosmos.camino.domain.KnightBoard;
+import com.okosmos.camino.domain.Solution;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,12 +20,13 @@ import java.util.List;
  *      seemed like a Scala parallel collection seemed to have a speedup with 50 items that could be operated on in parallel).
  *
  * The next level of speedup will be to use akka. A set of children evaluate each board, sending the solution (if done)
- * to a collector actor or else sending to itself the next boards. The routees (or children worker actors) whould need to
+ * to a collector actor or else sending to itself the next boards. The routees (or children worker actors) would need to
  * be limited to some sensible default and they would need to use a priority mailbox so that the "older" boards are
  * operated upon before the "younger" boards. Beyond that, the task could utilize more cores through using akka cluster
  *
  * Tests have not been written for the Java classes yet, but if you look in the scala branches, you'll see scalatest and
  * scalacheck tests. Those would need to be modified somewhat to work with these java versions.
+ *
  */
 public class ElCamino {
     public static void main(String[] args) {
@@ -47,9 +52,9 @@ public class ElCamino {
         LinkedList<Board> boards = new LinkedList<>();
         List<Solution> solutions = new LinkedList<>();
         boards.add(new KnightBoard(n, x, y));
-        int i = 1;
+//        int i = 0;
         while (!boards.isEmpty()) {
-            ++i;
+//            ++i;
             Board head = boards.remove();
             if (head.isDone()) {
                 solutions.add(head.solution().get());
@@ -61,9 +66,11 @@ public class ElCamino {
                        boards.addFirst(b);
                    }
                 }
+            /*
                 System.out.println("completed iteration " + i + " boards.size = " + boards.size());
                 System.out.println(boards.getFirst().show());
                 System.out.println();
+            */
             }
         }
         System.out.println("The solutions are");
